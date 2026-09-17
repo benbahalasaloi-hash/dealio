@@ -299,7 +299,8 @@
     const nav=document.querySelector('.pv-tabs'),sections=[...document.querySelectorAll('#pv-features,#pv-specs,#pv-reviews,#pv-faq')];if(!nav||!sections.length)return;
     sections.forEach(section=>section.classList.add('pv-tab-panel'));
     const links=[...nav.querySelectorAll('a')];
-    function activate(id){sections.forEach(section=>section.hidden=section.id!==id);links.forEach(link=>{const active=link.getAttribute('href')==='#'+id;link.classList.toggle('active',active);link.setAttribute('aria-selected',active?'true':'false')});nav.scrollIntoView({behavior:'smooth',block:'start'})}
+    const reviewPanel=sections.find(section=>section.id==='pv-reviews');if(reviewPanel)reviewPanel.parentElement.appendChild(reviewPanel);
+    function activate(id){sections.forEach(section=>section.hidden=section.id==='pv-reviews'?false:section.id!==id);links.forEach(link=>{const active=link.getAttribute('href')==='#'+id;link.classList.toggle('active',active);link.setAttribute('aria-selected',active?'true':'false')});if(id==='pv-reviews'&&reviewPanel)reviewPanel.scrollIntoView({behavior:'smooth',block:'start'});else nav.scrollIntoView({behavior:'smooth',block:'start'})}
     links.forEach(link=>{link.setAttribute('role','tab');link.onclick=event=>{event.preventDefault();activate(link.getAttribute('href').slice(1))}});
     nav.setAttribute('role','tablist');activate('pv-features');
     const reviewSection=document.querySelector('#pv-reviews .pv-section-inner');
