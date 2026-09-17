@@ -300,8 +300,9 @@
     const nav=document.querySelector('.pv-tabs'),sections=[...document.querySelectorAll('#pv-features,#pv-specs,#pv-reviews,#pv-faq')];if(!nav||!sections.length)return;
     sections.forEach(section=>section.classList.add('pv-tab-panel'));
     const links=[...nav.querySelectorAll('a')];
-    const editorial=document.querySelector('#kaEditorial'),panels=editorial?[...sections,editorial]:sections;
-    function activate(id,scrollToTabs=false){panels.forEach(section=>section.hidden=id==='pv-features'?(section.id!=='pv-features'&&section.id!=='kaEditorial'):section.id!==id);links.forEach(link=>{const active=link.getAttribute('href')==='#'+id;link.classList.toggle('active',active);link.setAttribute('aria-selected',active?'true':'false')});if(scrollToTabs)nav.scrollIntoView({block:'start'})}
+    const editorial=document.querySelector('#kaEditorial'),panels=editorial?[...sections,editorial]:sections,reviewPanel=document.querySelector('#pv-reviews');
+    if(reviewPanel)reviewPanel.parentElement.appendChild(reviewPanel);
+    function activate(id,scrollToTabs=false){panels.forEach(section=>{if(section.id==='pv-reviews')section.hidden=false;else if(id==='pv-reviews')section.hidden=true;else section.hidden=id==='pv-features'?(section.id!=='pv-features'&&section.id!=='kaEditorial'):section.id!==id});links.forEach(link=>{const active=link.getAttribute('href')==='#'+id;link.classList.toggle('active',active);link.setAttribute('aria-selected',active?'true':'false')});if(scrollToTabs)(id==='pv-reviews'&&reviewPanel?reviewPanel:nav).scrollIntoView({block:'start'})}
     links.forEach(link=>{link.setAttribute('role','tab');link.onclick=event=>{event.preventDefault();activate(link.getAttribute('href').slice(1),true)}});
     nav.setAttribute('role','tablist');activate('pv-features');
     const reviewSection=document.querySelector('#pv-reviews .pv-section-inner');
