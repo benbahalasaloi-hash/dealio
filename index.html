@@ -247,5 +247,67 @@
   <style>
   .scrim{z-index:500}.legal-demo{background:#eef7f5;border:1px solid #cfe2dc;border-radius:10px;padding:13px;color:#285448}.page-content h3{margin-top:24px}.page-content p{margin:7px 0 12px}
   </style>
+  <style>
+  .pv-tabs{position:sticky;top:62px;box-shadow:0 5px 18px #1526300c}
+  .pv-tabs .pv-wrap{gap:8px;padding-top:8px;padding-bottom:8px}
+  .pv-tabs a{border:1px solid transparent;border-radius:999px;padding:10px 18px;color:#586267;transition:.2s;cursor:pointer}
+  .pv-tabs a:hover{background:#f2f5f4;color:#111}.pv-tabs a.active{background:#18333d;color:#fff;border-color:#18333d}
+  .pv-tab-panel[hidden]{display:none!important}.pv-tab-panel{min-height:340px}
+  .pv-rating,.pv-announcement{cursor:pointer}.pv-rating:focus-visible,.pv-announcement:focus-visible{outline:3px solid #00b67a;outline-offset:3px}
+  .pv-review-title-image{display:block;width:min(100%,760px);max-height:190px;object-fit:cover;object-position:center 48%;margin:0 auto 20px;border-radius:12px}
+  .pv-review-carousel-wrap{position:relative}.pv-review-carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 12px}.pv-review-carousel::-webkit-scrollbar{display:none}
+  .pv-review-carousel .pv-review{flex:0 0 calc((100% - 28px)/3);scroll-snap-align:start;min-height:210px}
+  .pv-carousel-controls{display:flex;justify-content:center;gap:10px;margin-top:16px}.pv-carousel-btn{width:44px;height:44px;border:1px solid #ccd4d1;border-radius:50%;background:#fff;font-size:21px;cursor:pointer}.pv-carousel-btn:hover{background:#18333d;color:#fff}
+  .pv-review-modal{position:fixed;inset:0;z-index:700;background:#0009;display:none;align-items:center;justify-content:center;padding:18px}.pv-review-modal.open{display:flex}
+  .pv-review-dialog{width:min(760px,100%);max-height:min(820px,92vh);background:#fff;border-radius:18px;display:flex;flex-direction:column;box-shadow:0 24px 70px #0005;overflow:hidden}
+  .pv-review-dialog-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #e1e5e3}.pv-review-dialog-head h2{font-size:21px;margin:0}.pv-review-dialog-head .pv-green{margin-left:auto}.pv-review-dialog-close{border:0;background:#edf1f0;border-radius:50%;width:40px;height:40px;font-size:24px;cursor:pointer}
+  .pv-review-list{overflow:auto;padding:10px 20px 22px}.pv-review-modal-card{padding:17px 0;border-bottom:1px solid #e3e7e5}.pv-review-modal-card:last-child{border-bottom:0}.pv-review-modal-card h3{font-size:16px;margin:7px 0}.pv-review-modal-card p{color:#566166;line-height:1.5;margin:5px 0}.pv-review-modal-card small{color:#65716c}
+  @media(max-width:800px){.pv-tabs{top:54px}.pv-tabs .pv-wrap{padding:7px 10px;gap:5px}.pv-tabs a{padding:9px 13px;font-size:13px}.pv-tab-panel{min-height:260px}.pv-review-title-image{max-height:120px;border-radius:8px}.pv-review-carousel .pv-review{flex-basis:86%;min-height:190px}.pv-review-dialog{max-height:88vh;border-radius:14px}.pv-review-dialog-head{padding:13px 14px}.pv-review-list{padding:5px 15px 18px}}
+  </style>
+  <div class="pv-review-modal" id="pvReviewModal" aria-hidden="true"><section class="pv-review-dialog" role="dialog" aria-modal="true" aria-labelledby="pvReviewModalTitle"><div class="pv-review-dialog-head"><div><h2 id="pvReviewModalTitle">Customer reviews</h2><small>4,000 happy customers on Trustpilot</small></div><span class="pv-green">★★★★★</span><button class="pv-review-dialog-close" type="button" aria-label="Close reviews">×</button></div><div class="pv-review-list" id="pvReviewList"></div></section></div>
+  <script>
+  const pvReviewData=[
+    ['Excellent purchase','The product arrived quickly, securely packed and exactly as shown.','Emily R.'],
+    ['Very satisfied','Easy ordering and clear updates from checkout to delivery.','James T.'],
+    ['Great value','Excellent quality for the price. I would happily order again.','Olivia M.'],
+    ['Fast delivery','The parcel arrived earlier than expected and in perfect condition.','Daniel K.'],
+    ['Simple and efficient','The website was easy to use and the payment schedule was very clear.','Sophia L.'],
+    ['Highly recommended','A smooth experience from start to finish and a great product.','Noah B.'],
+    ['Beautiful quality','The finish looks premium and everything works exactly as expected.','Ava C.'],
+    ['Helpful service','My question was answered quickly and politely before I ordered.','Liam H.'],
+    ['Five-star experience','Clear product information, secure checkout and careful packaging.','Mia P.'],
+    ['Would buy again','Very pleased with both the item and the delivery experience.','Ethan S.'],
+    ['Perfect condition','The item was protected well and arrived without a mark.','Isabella W.'],
+    ['Smooth checkout','Choosing the installment option was straightforward and transparent.','Lucas D.'],
+    ['Exactly as described','The photos and description matched the product I received.','Amelia G.'],
+    ['Reliable store','Good communication and tracking throughout the order.','Henry F.'],
+    ['Impressive product','It feels sturdy, performs well and looks great in person.','Charlotte N.'],
+    ['Quick and easy','I placed my order in minutes and received regular updates.','Benjamin A.'],
+    ['Great customer care','The support team handled my request efficiently.','Harper J.'],
+    ['Excellent packaging','Everything was neatly arranged and safely protected.','Leo V.'],
+    ['Very good experience','The whole process felt clear, secure and professional.','Evelyn O.'],
+    ['Absolutely delighted','A quality product, prompt delivery and a seamless purchase.','Jack E.']
+  ];
+  const pvReviewModal=document.querySelector('#pvReviewModal'),pvReviewList=document.querySelector('#pvReviewList');
+  pvReviewList.innerHTML=pvReviewData.map((review,index)=>`<article class="pv-review-modal-card"><div class="pv-green">${index===11?'★★★★☆':'★★★★★'}</div><h3>${review[0]}</h3><p>${review[1]}</p><small><b>${review[2]}</b> · ✓ Verified purchase</small></article>`).join('');
+  function pvOpenReviews(){pvReviewModal.classList.add('open');pvReviewModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';pvReviewModal.querySelector('.pv-review-dialog-close').focus()}
+  function pvCloseReviews(){pvReviewModal.classList.remove('open');pvReviewModal.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+  pvReviewModal.querySelector('.pv-review-dialog-close').onclick=pvCloseReviews;
+  pvReviewModal.onclick=event=>{if(event.target===pvReviewModal)pvCloseReviews()};
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&pvReviewModal.classList.contains('open'))pvCloseReviews()});
+  function pvEnhanceProductTabs(){
+    const nav=document.querySelector('.pv-tabs'),sections=[...document.querySelectorAll('#pv-features,#pv-specs,#pv-reviews,#pv-faq')];if(!nav||!sections.length)return;
+    sections.forEach(section=>section.classList.add('pv-tab-panel'));
+    const links=[...nav.querySelectorAll('a')];
+    function activate(id){sections.forEach(section=>section.hidden=section.id!==id);links.forEach(link=>{const active=link.getAttribute('href')==='#'+id;link.classList.toggle('active',active);link.setAttribute('aria-selected',active?'true':'false')});nav.scrollIntoView({behavior:'smooth',block:'start'})}
+    links.forEach(link=>{link.setAttribute('role','tab');link.onclick=event=>{event.preventDefault();activate(link.getAttribute('href').slice(1))}});
+    nav.setAttribute('role','tablist');activate('pv-features');
+    const reviewSection=document.querySelector('#pv-reviews .pv-section-inner');
+    if(reviewSection){const cards=pvReviewData.slice(0,10).map((review,index)=>`<article class="pv-review"><div class="pv-green">${index===6?'★★★★☆':'★★★★★'}</div><h3>${review[0]}</h3><p>${review[1]}</p><small><b>${review[2]}</b> · ✓ Verified purchase</small></article>`).join('');reviewSection.innerHTML=`<img class="pv-review-title-image" src="https://purple-clothing.com/ChatGPT%20Image%2017%20sept.%202026%2C%2018_17_17.png" alt="Customer reviews"><div class="pv-review-carousel-wrap"><div class="pv-review-carousel" aria-label="Customer review carousel">${cards}</div><div class="pv-carousel-controls"><button class="pv-carousel-btn" type="button" data-review-dir="-1" aria-label="Previous reviews">←</button><button class="pv-carousel-btn" type="button" data-review-dir="1" aria-label="Next reviews">→</button></div></div>`;const track=reviewSection.querySelector('.pv-review-carousel');reviewSection.querySelectorAll('[data-review-dir]').forEach(button=>button.onclick=()=>track.scrollBy({left:Number(button.dataset.reviewDir)*track.clientWidth*.9,behavior:'smooth'}))}
+    document.querySelectorAll('.pv-rating,.pv-announcement').forEach(trigger=>{trigger.setAttribute('role','button');trigger.setAttribute('tabindex','0');trigger.setAttribute('aria-label','Open 4,000 customer reviews');trigger.onclick=pvOpenReviews;trigger.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();pvOpenReviews()}}});
+  }
+  const pvBindTabsOriginal=pvBind;pvBind=function(){pvBindTabsOriginal();pvEnhanceProductTabs()};
+  if(pvKey)pvRender();
+  </script>
 </body>
 </html>
