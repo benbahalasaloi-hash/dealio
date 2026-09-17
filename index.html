@@ -212,5 +212,10 @@
   pvMoney=n=>n.toLocaleString('en-US',{style:'currency',currency:'USD'});
   render();renderHot();translateUs();if(pvKey){pvVariant=Object.keys(pvProduct.variants||{})[0]||'';pvRender();pvRenderCart()}
   </script>
+  <script>
+  const pvBindTrustImage=pvBind;
+  pvBind=function(){pvBindTrustImage();const image=document.querySelector('.pv-trust-badges img');if(image)image.src='https://purple-clothing.com/ChatGPT%20Image%2017%20sept.%202026%2C%2018_04_57.png'};
+  if(pvKey)pvRender();
+  </script>
 </body>
 </html>
