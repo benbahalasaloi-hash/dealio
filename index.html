@@ -310,5 +310,13 @@
   const pvBindTabsOriginal=pvBind;pvBind=function(){pvBindTabsOriginal();pvEnhanceProductTabs()};
   if(pvKey)pvRender();
   </script>
+  <script>
+  const kitchenAidDeal=deals.find(deal=>deal.id===15);
+  if(kitchenAidDeal){kitchenAidDeal.old='$399.99';kitchenAidDeal.tag='-64%'}
+  pvProducts.kitchenaid.old='$399.99';
+  pvProducts.kitchenaid.save='Save $257.49';
+  render();renderHot();
+  if(pvKey==='kitchenaid')pvRender();
+  </script>
 </body>
 </html>
